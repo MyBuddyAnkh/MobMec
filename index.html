@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 
+        Basic document setup
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>FixMyRide | Mobile Mechanic & Roadside Assistance</title>
+
+    <meta 
+        name="description" 
+        content="FixMyRide connects drivers with nearby mobile mechanics and roadside helpers for tire changes, battery boosts, inspections, and minor vehicle repairs."
+    >
+
+    <!-- External CSS file -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- External JavaScript file -->
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- =======================================================
+         HEADER / NAVIGATION
+         This section contains logo, navigation links, and CTA.
+         
+    ======================================================== -->
+    <header id="main-header" class="site-header">
+        <nav id="main-navbar" class="navbar">
+
+            <!-- Website logo / brand name -->
+            <div id="brand-logo" class="brand">
+                <a href="index.html" class="brand-link">
+                    FixMyRide
+                </a>
+            </div>
+
+            <!-- Main navigation links -->
+            <ul id="nav-menu" class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#services" class="nav-link">Services</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#mechanics" class="nav-link">For Mechanics</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#pricing" class="nav-link">Pricing</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+
+            <!-- Header call-to-action button -->
+            <div id="nav-actions" class="nav-actions">
+                <a href="#request-service" class="btn btn-primary">
+                    Request Help
+                </a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- =======================================================
+         MAIN CONTENT
+    ======================================================== -->
+    <main id="main-content">
+
+
+        <!-- =======================================================
+             HERO SECTION
+             First section user sees.
+              add a background image using CSS.
+        ======================================================== -->
+        <section id="home" class="hero-section">
+            <div class="hero-container">
+
+                <div class="hero-content">
+                    <p class="hero-label">
+                        On-demand roadside help and mobile mechanic service
+                    </p>
+
+                    <h1 class="hero-title">
+                        Get trusted vehicle help wherever you are.
+                    </h1>
+
+                    <p class="hero-description">
+                        FixMyRide connects drivers with nearby mechanics and verified helpers
+                        for urgent roadside assistance, small repairs, inspections, tire changes,
+                        and battery boosts.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="#request-service" class="btn btn-primary">
+                            Request Service
+                        </a>
+
+                        <a href="#how-it-works" class="btn btn-secondary">
+                            See How It Works
+                        </a>
+                    </div>
+
+                    <!-- Trust indicators -->
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <strong class="stat-number">24/7</strong>
+                            <span class="stat-label">Service Requests</span>
+                        </div>
+
+                        <div class="stat-item">
+                            <strong class="stat-number">Fast</strong>
+                            <span class="stat-label">Nearby Matching</span>
+                        </div>
+
+                        <div class="stat-item">
+                            <strong class="stat-number">Verified</strong>
+                            <span class="stat-label">Mechanics & Helpers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero visual placeholder -->
+                <div class="hero-image-wrapper">
+                    <!-- 
+                        Later you can replace this with:
+                        <img src="images/mechanic-car.jpg" alt="Mobile mechanic helping a driver">
+                    -->
+                    <div class="hero-card">
+                        <h2>Need help now?</h2>
+                        <p>Flat tire, dead battery, warning light, or minor breakdown?</p>
+                        <a href="#request-service" class="btn btn-primary">
+                            Start Request
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             PROBLEM / VALUE SECTION
+             Explains why the website exists.
+        ======================================================== -->
+        <section id="problem-solution" class="section value-section">
+            <div class="section-container">
+
+                <div class="section-heading">
+                    <p class="section-label">Why FixMyRide?</p>
+                    <h2 class="section-title">
+                        Car trouble should not leave you stuck for hours.
+                    </h2>
+                    <p class="section-description">
+                        Traditional towing and repair services can be slow, expensive, and unclear.
+                        FixMyRide is designed to make roadside help easier, more transparent,
+                        and more accessible.
+                    </p>
+                </div>
+
+                <div class="value-grid">
+
+                    <article class="value-card">
+                        <h3>Quick request creation</h3>
+                        <p>
+                            Customers can describe the issue, add their location, and request help
+                            without making multiple phone calls.
+                        </p>
+                    </article>
+
+                    <article class="value-card">
+                        <h3>Nearby service matching</h3>
+                        <p>
+                            Mechanics and helpers can view nearby jobs and choose whether to accept
+                            or reject the request.
+                        </p>
+                    </article>
+
+                    <article class="value-card">
+                        <h3>Clear service status</h3>
+                        <p>
+                            Customers can track request status such as pending, accepted, on the way,
+                            in progress, and completed.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             SERVICES SECTION
+             Main services offered.
+        ======================================================== -->
+        <section id="services" class="section services-section">
+            <div class="section-container">
+
+                <div class="section-heading">
+                    <p class="section-label">Services</p>
+                    <h2 class="section-title">
+                        Roadside and mobile mechanic services
+                    </h2>
+                    <p class="section-description">
+                        Customers can request different types of help depending on the situation.
+                    </p>
+                </div>
+
+                <div id="services-grid" class="services-grid">
+
+                    <article class="service-card" id="service-tire-change">
+                        <div class="service-icon">🛞</div>
+                        <h3>Tire Change</h3>
+                        <p>
+                            Assistance with flat tires, spare tire installation, and basic roadside tire support.
+                        </p>
+                    </article>
+
+                    <article class="service-card" id="service-battery-boost">
+                        <div class="service-icon">🔋</div>
+                        <h3>Battery Boost</h3>
+                        <p>
+                            Help with dead batteries, jump starts, and basic battery-related support.
+                        </p>
+                    </article>
+
+                    <article class="service-card" id="service-minor-repair">
+                        <div class="service-icon">🔧</div>
+                        <h3>Minor Repairs</h3>
+                        <p>
+                            Mobile mechanics can help inspect and fix small vehicle problems when possible.
+                        </p>
+                    </article>
+
+                    <article class="service-card" id="service-diagnostic-check">
+                        <div class="service-icon">🚗</div>
+                        <h3>Basic Diagnosis</h3>
+                        <p>
+                            Customers can describe symptoms and request a mechanic to inspect the issue.
+                        </p>
+                    </article>
+
+                    <article class="service-card" id="service-fuel-help">
+                        <div class="service-icon">⛽</div>
+                        <h3>Fuel Assistance</h3>
+                        <p>
+                            Help for drivers who run out of fuel and need quick roadside support.
+                        </p>
+                    </article>
+
+                    <article class="service-card" id="service-lockout-help">
+                        <div class="service-icon">🔑</div>
+                        <h3>Lockout Support</h3>
+                        <p>
+                            Customers can request support if they are locked out of their vehicle.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             HOW IT WORKS SECTION
+             Explains basic platform flow.
+        ======================================================== -->
+        <section id="how-it-works" class="section how-section">
+            <div class="section-container">
+
+                <div class="section-heading">
+                    <p class="section-label">Process</p>
+                    <h2 class="section-title">
+                        How FixMyRide works
+                    </h2>
+                    <p class="section-description">
+                        The platform works like a request-and-accept system between customers
+                        and nearby mechanics or helpers.
+                    </p>
+                </div>
+
+                <div class="steps-grid">
+
+                    <article class="step-card" id="step-create-request">
+                        <span class="step-number">01</span>
+                        <h3>Create a request</h3>
+                        <p>
+                            The customer enters their vehicle details, location, and problem description.
+                        </p>
+                    </article>
+
+                    <article class="step-card" id="step-match-helper">
+                        <span class="step-number">02</span>
+                        <h3>Nearby helpers are notified</h3>
+                        <p>
+                            Mechanics or helpers can view available jobs near them and decide whether to accept.
+                        </p>
+                    </article>
+
+                    <article class="step-card" id="step-service-progress">
+                        <span class="step-number">03</span>
+                        <h3>Service begins</h3>
+                        <p>
+                            Once accepted, the request status updates and the helper starts heading to the customer.
+                        </p>
+                    </article>
+
+                    <article class="step-card" id="step-complete-payment">
+                        <span class="step-number">04</span>
+                        <h3>Complete the job</h3>
+                        <p>
+                            After the issue is resolved, the request can be marked as completed and reviewed.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             CUSTOMER FEATURES SECTION
+             Good for showing project functionality.
+        ======================================================== -->
+        <section id="customer-features" class="section customer-section">
+            <div class="section-container two-column-layout">
+
+                <div class="content-column">
+                    <p class="section-label">For Customers</p>
+                    <h2 class="section-title">
+                        Simple request flow for drivers
+                    </h2>
+                    <p class="section-description">
+                        Customers should be able to quickly request help, provide details,
+                        and track the service from start to finish.
+                    </p>
+
+                    <ul class="feature-list">
+                        <li class="feature-item">Create service request</li>
+                        <li class="feature-item">Add vehicle make, model, and year</li>
+                        <li class="feature-item">Describe the car issue</li>
+                        <li class="feature-item">Add pickup or breakdown location</li>
+                        <li class="feature-item">Track request status</li>
+                        <li class="feature-item">Rate and review mechanic/helper</li>
+                    </ul>
+                </div>
+
+                <div class="visual-column">
+                    <div class="dashboard-preview-card">
+                        <h3>Customer Request Preview</h3>
+
+                        <div class="preview-row">
+                            <span>Vehicle:</span>
+                            <strong>2024 Audi Q5</strong>
+                        </div>
+
+                        <div class="preview-row">
+                            <span>Issue:</span>
+                            <strong>Battery not starting</strong>
+                        </div>
+
+                        <div class="preview-row">
+                            <span>Status:</span>
+                            <strong>Searching for helper</strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             MECHANIC FEATURES SECTION
+             .
+        ======================================================== -->
+        <section id="mechanics" class="section mechanic-section">
+            <div class="section-container two-column-layout reverse-layout">
+
+                <div class="visual-column">
+                    <div class="dashboard-preview-card">
+                        <h3>Mechanic Job Preview</h3>
+
+                        <div class="preview-row">
+                            <span>Distance:</span>
+                            <strong>3.2 km away</strong>
+                        </div>
+
+                        <div class="preview-row">
+                            <span>Service:</span>
+                            <strong>Tire Change</strong>
+                        </div>
+
+                        <div class="preview-row">
+                            <span>Action:</span>
+                            <strong>Accept / Reject</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-column">
+                    <p class="section-label">For Mechanics & Helpers</p>
+                    <h2 class="section-title">
+                        Accept nearby jobs on your schedule
+                    </h2>
+                    <p class="section-description">
+                        Mechanics and approved helpers can receive job requests, review the issue,
+                        and choose whether they want to accept the work.
+                    </p>
+
+                    <ul class="feature-list">
+                        <li class="feature-item">View nearby service requests</li>
+                        <li class="feature-item">Accept or reject jobs</li>
+                        <li class="feature-item">Update job status</li>
+                        <li class="feature-item">View customer problem description</li>
+                        <li class="feature-item">Manage availability</li>
+                        <li class="feature-item">Build profile and ratings</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             TRUST / SAFETY SECTION
+             Important for real-world service websites.
+        ======================================================== -->
+        <section id="trust-safety" class="section trust-section">
+            <div class="section-container">
+
+                <div class="section-heading">
+                    <p class="section-label">Trust & Safety</p>
+                    <h2 class="section-title">
+                        Built with safety and transparency in mind
+                    </h2>
+                    <p class="section-description">
+                        A professional service platform should include trust-building features
+                        for both customers and service providers.
+                    </p>
+                </div>
+
+                <div class="trust-grid">
+
+                    <article class="trust-card">
+                        <h3>Verified profiles</h3>
+                        <p>
+                            Mechanics and helpers can have verified profiles, service history,
+                            and customer reviews.
+                        </p>
+                    </article>
+
+                    <article class="trust-card">
+                        <h3>Transparent pricing</h3>
+                        <p>
+                            Customers should see estimated pricing before confirming a request.
+                        </p>
+                    </article>
+
+                    <article class="trust-card">
+                        <h3>Request tracking</h3>
+                        <p>
+                            Customers and mechanics can track the service status during the full process.
+                        </p>
+                    </article>
+
+                    <article class="trust-card">
+                        <h3>Review system</h3>
+                        <p>
+                            Customers can rate completed services to help maintain quality.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             PRICING SECTION
+             This is simple for now. 
+        ======================================================== -->
+        <section id="pricing" class="section pricing-section">
+            <div class="section-container">
+
+                <div class="section-heading">
+                    <p class="section-label">Pricing</p>
+                    <h2 class="section-title">
+                        Simple service-based pricing
+                    </h2>
+                    <p class="section-description">
+                        Pricing can depend on service type, distance, urgency, and mechanic availability.
+                    </p>
+                </div>
+
+                <div class="pricing-grid">
+
+                    <article class="pricing-card">
+                        <h3>Basic Help</h3>
+                        <p class="price-text">Starting from $35</p>
+                        <p>
+                            For simple tasks like battery boost, tire help, or basic roadside support.
+                        </p>
+                    </article>
+
+                    <article class="pricing-card featured-pricing-card">
+                        <h3>Mobile Mechanic</h3>
+                        <p class="price-text">Starting from $75</p>
+                        <p>
+                            For mechanic inspection, minor repairs, and vehicle issue diagnosis.
+                        </p>
+                    </article>
+
+                    <article class="pricing-card">
+                        <h3>Emergency Request</h3>
+                        <p class="price-text">Variable pricing</p>
+                        <p>
+                            For urgent requests, after-hours support, or longer-distance service.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             REQUEST SERVICE FORM
+             This form does not work yet.
+             JavaScript/backend can collect and save this data.
+        ======================================================== -->
+        <section id="request-service" class="section request-section">
+            <div class="section-container">
+
+                <div class="section-heading">
+                    <p class="section-label">Request Service</p>
+                    <h2 class="section-title">
+                        Tell us what happened
+                    </h2>
+                    <p class="section-description">
+                        Fill out the form below. Later, this form can be connected to JavaScript,
+                        a database, and a backend API.
+                    </p>
+                </div>
+
+                <form id="service-request-form" class="service-form">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customer-name">Full Name</label>
+                            <input 
+                                type="text" 
+                                id="customer-name" 
+                                name="customerName" 
+                                placeholder="Enter your full name"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customer-phone">Phone Number</label>
+                            <input 
+                                type="tel" 
+                                id="customer-phone" 
+                                name="customerPhone" 
+                                placeholder="Enter your phone number"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vehicle-make">Vehicle Make</label>
+                            <input 
+                                type="text" 
+                                id="vehicle-make" 
+                                name="vehicleMake" 
+                                placeholder="Example: Audi, Toyota, Honda"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vehicle-model">Vehicle Model</label>
+                            <input 
+                                type="text" 
+                                id="vehicle-model" 
+                                name="vehicleModel" 
+                                placeholder="Example: Q5, Corolla, Civic"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vehicle-year">Vehicle Year</label>
+                            <input 
+                                type="number" 
+                                id="vehicle-year" 
+                                name="vehicleYear" 
+                                placeholder="Example: 2024"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service-type">Service Type</label>
+                            <select id="service-type" name="serviceType" required>
+                                <option value="">Select a service</option>
+                                <option value="tire-change">Tire Change</option>
+                                <option value="battery-boost">Battery Boost</option>
+                                <option value="minor-repair">Minor Repair</option>
+                                <option value="diagnostic-check">Basic Diagnosis</option>
+                                <option value="fuel-help">Fuel Assistance</option>
+                                <option value="lockout-help">Lockout Support</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-location">Current Location</label>
+                        <input 
+                            type="text" 
+                            id="customer-location" 
+                            name="customerLocation" 
+                            placeholder="Enter your address or nearest landmark"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="problem-description">Problem Description</label>
+                        <textarea 
+                            id="problem-description" 
+                            name="problemDescription" 
+                            placeholder="Briefly describe what happened to your vehicle"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="terms-agreement" 
+                            name="termsAgreement"
+                            required
+                        >
+                        <label for="terms-agreement">
+                            I confirm that the information provided is accurate.
+                        </label>
+                    </div>
+
+                    <button type="submit" id="submit-request-btn" class="btn btn-primary">
+                        Submit Request
+                    </button>
+
+                </form>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             TESTIMONIALS SECTION
+             Placeholder reviews for professional design.
+        ======================================================== -->
+        <section id="testimonials" class="section testimonials-section">
+            <div class="section-container">
+
+                <div class="section-heading">
+                    <p class="section-label">Reviews</p>
+                    <h2 class="section-title">
+                        What drivers could say
+                    </h2>
+                    <p class="section-description">
+                        Later, these reviews can come from your database.
+                    </p>
+                </div>
+
+                <div class="testimonial-grid">
+
+                    <article class="testimonial-card">
+                        <p>
+                            “The request process was simple and I got help with my flat tire quickly.”
+                        </p>
+                        <h4>Customer Review</h4>
+                    </article>
+
+                    <article class="testimonial-card">
+                        <p>
+                            “Very useful idea for drivers who need small repairs without towing the car.”
+                        </p>
+                        <h4>Customer Review</h4>
+                    </article>
+
+                    <article class="testimonial-card">
+                        <p>
+                            “As a mechanic, I like the idea of accepting nearby jobs when I am available.”
+                        </p>
+                        <h4>Mechanic Review</h4>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             FAQ SECTION
+             Good professional websites usually include FAQs.
+        ======================================================== -->
+        <section id="faq" class="section faq-section">
+            <div class="section-container">
+
+                <div class="section-heading">
+                    <p class="section-label">FAQ</p>
+                    <h2 class="section-title">
+                        Frequently asked questions
+                    </h2>
+                </div>
+
+                <div class="faq-list">
+
+                    <details class="faq-item">
+                        <summary>Can non-mechanics accept requests?</summary>
+                        <p>
+                            For simple tasks like tire changes or battery boosts, approved helpers may be allowed.
+                            More technical repairs should be handled by qualified mechanics.
+                        </p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Does FixMyRide replace towing?</summary>
+                        <p>
+                            No. FixMyRide is mainly for roadside help and mobile mechanic support.
+                            If the car needs major repair, towing may still be required.
+                        </p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>How are prices calculated?</summary>
+                        <p>
+                            Pricing can depend on service type, distance, time, urgency, and mechanic availability.
+                        </p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Can customers track their request?</summary>
+                        <p>
+                            Yes. In a full version, customers should be able to track request status in real time.
+                        </p>
+                    </details>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =======================================================
+             CONTACT SECTION
+        ======================================================== -->
+        <section id="contact" class="section contact-section">
+            <div class="section-container two-column-layout">
+
+                <div class="content-column">
+                    <p class="section-label">Contact</p>
+                    <h2 class="section-title">
+                        Have questions?
+                    </h2>
+                    <p class="section-description">
+                        Contact our support team for service questions, mechanic registration,
+                        or partnership inquiries.
+                    </p>
+
+                    <div class="contact-info">
+                        <p><strong>Email:</strong> support@fixmyride.com</p>
+                        <p><strong>Phone:</strong> +1 000 000 0000</p>
+                        <p><strong>Location:</strong> Toronto, Ontario</p>
+                    </div>
+                </div>
+
+                <form id="contact-form" class="contact-form">
+
+                    <div class="form-group">
+                        <label for="contact-name">Name</label>
+                        <input 
+                            type="text" 
+                            id="contact-name" 
+                            name="contactName" 
+                            placeholder="Enter your name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-email">Email</label>
+                        <input 
+                            type="email" 
+                            id="contact-email" 
+                            name="contactEmail" 
+                            placeholder="Enter your email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-message">Message</label>
+                        <textarea 
+                            id="contact-message" 
+                            name="contactMessage" 
+                            placeholder="Write your message"
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Send Message
+                    </button>
+
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- =======================================================
+         FOOTER
+    ======================================================== -->
+    <footer id="main-footer" class="site-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+                <h2>FixMyRide</h2>
+                <p>
+                    Mobile mechanic and roadside assistance platform connecting
+                    drivers with nearby helpers.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#mechanics">For Mechanics</a></li>
+                    <li><a href="#request-service">Request Service</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Services</h3>
+
+                <ul>
+                    <li><a href="#service-tire-change">Tire Change</a></li>
+                    <li><a href="#service-battery-boost">Battery Boost</a></li>
+                    <li><a href="#service-minor-repair">Minor Repairs</a></li>
+                    <li><a href="#service-diagnostic-check">Diagnosis</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Legal</h3>
+
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Safety Guidelines</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                © 2026 FixMyRide. All rights reserved.
+            </p>
+        </div>
+
+    </footer>
+
+</body>
+</html>
