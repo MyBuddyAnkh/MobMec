@@ -5,11 +5,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const contactForm = document.getElementById("contact-form");
     const submitRequestButton = document.getElementById("submit-request-btn");
     const navLinks = document.querySelectorAll(".nav-link");
+    const mobileMenuButton = document.getElementById("mobile-menu-btn");
+    const navMenu = document.getElementById("nav-menu");
+
+    if (mobileMenuButton && navMenu) {
+    mobileMenuButton.addEventListener("click", function () {
+        navMenu.classList.toggle("active");
+
+        if (navMenu.classList.contains("active")) {
+            mobileMenuButton.textContent = "✕";
+        } else {
+            mobileMenuButton.textContent = "☰";
+        }
+    });
+}
 
     /* Smooth closes or future nav logic can use this later */
     navLinks.forEach(function (link) {
         link.addEventListener("click", function () {
             console.log("Navigation clicked:", link.textContent.trim());
+
+            if (navMenu) {
+                navMenu.classList.remove("active");
+            }
+
+            if (mobileMenuButton) {
+                mobileMenuButton.textContent = "☰";
+            }
         });
     });
 
