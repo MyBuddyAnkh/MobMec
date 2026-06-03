@@ -8,17 +8,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const mobileMenuButton = document.getElementById("mobile-menu-btn");
     const navMenu = document.getElementById("nav-menu");
 
-    if (mobileMenuButton && navMenu) {
-    mobileMenuButton.addEventListener("click", function () {
-        navMenu.classList.toggle("active");
+    let serviceRequests = JSON.parse(localStorage.getItem("serviceRequests")) || [];
 
-        if (navMenu.classList.contains("active")) {
-            mobileMenuButton.textContent = "✕";
-        } else {
-            mobileMenuButton.textContent = "☰";
-        }
-    });
-}
+    displayRequests();
+
+    if (mobileMenuButton && navMenu) {
+        mobileMenuButton.addEventListener("click", function () {
+            navMenu.classList.toggle("active");
+
+            if (navMenu.classList.contains("active")) {
+                mobileMenuButton.textContent = "Close";
+            } else {
+                mobileMenuButton.textContent = "Menu";
+            }
+        });
+    }
 
     /* Smooth closes or future nav logic can use this later */
     navLinks.forEach(function (link) {
@@ -30,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (mobileMenuButton) {
-                mobileMenuButton.textContent = "☰";
+                mobileMenuButton.textContent = "Menu";
             }
         });
     });
@@ -66,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const requestData = {
+                id: Date.now(),
                 customerName: customerName,
                 customerPhone: customerPhone,
                 vehicleMake: vehicleMake,
@@ -78,7 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 createdAt: new Date().toLocaleString()
             };
 
-            console.log("New service request:", requestData);
+            serviceRequests.push(requestData);
+            saveRequestsToLocalStorage();
+            displayRequests();
 
             showMessage(
                 "Your request has been submitted successfully. A nearby helper will be matched soon.",
@@ -89,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (submitRequestButton) {
                 submitRequestButton.textContent = "Request Submitted";
-                
+
                 setTimeout(function () {
                     submitRequestButton.textContent = "Submit Request";
                 }, 2500);
@@ -127,6 +134,119 @@ document.addEventListener("DOMContentLoaded", function () {
 
             contactForm.reset();
         });
+    }
+
+    function saveRequestsToLocalStorage() {
+        localStorage.setItem("serviceRequests", JSON.stringify(serviceRequests));
+    }
+
+    function displayRequests() {
+        const requestsList = document.getElementById("requests-list");
+
+        if (!requestsList) {
+            return;
+        }
+
+        requestsList.innerHTML = "";
+
+        if (serviceRequests.length === 0) {
+            requestsList.innerHTML = "<p class=\"empty-requests-message\">No service requests yet.</p>";
+            return;
+        }
+
+        serviceRequests.forEach(function (request) {
+            const requestCard = document.createElement("div");
+            requestCard.className = "request-card";
+
+            requestCard.innerHTML = `
+                <h3>${formatServiceType(request.serviceType)}</h3>
+                <p><strong>Customer:</strong> ${request.customerName}</p>
+                <p><strong>Phone:</strong> ${request.customerPhone}</p>
+                <p><strong>Vehicle:</strong> ${formatVehicle(request)}</p>
+                <p><strong>Location:</strong> ${request.customerLocation}</p>
+                <p><strong>Problem:</strong> ${request.problemDescription}</p>
+                <p><strong>Status:</strong> <span class="request-status">${request.status}</span></p>
+                <p><strong>Created:</strong> ${request.createdAt}</p>
+
+                <div class="request-actions">
+                    <button class="accept-btn" data-id="${request.id}">Accept</button>
+                    <button class="reject-btn" data-id="${request.id}">Reject</button>
+                    <button class="complete-btn" data-id="${request.id}">Complete</button>
+                </div>
+            `;
+
+            requestsList.appendChild(requestCard);
+        });
+
+        addRequestButtonEvents();
+    }
+
+    function addRequestButtonEvents() {
+        const acceptButtons = document.querySelectorAll(".accept-btn");
+        const rejectButtons = document.querySelectorAll(".reject-btn");
+        const completeButtons = document.querySelectorAll(".complete-btn");
+
+        acceptButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                updateRequestStatus(Number(button.dataset.id), "Accepted");
+            });
+        });
+
+        rejectButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                updateRequestStatus(Number(button.dataset.id), "Rejected");
+            });
+        });
+
+        completeButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                updateRequestStatus(Number(button.dataset.id), "Completed");
+            });
+        });
+    }
+
+    function updateRequestStatus(requestId, newStatus) {
+        serviceRequests = serviceRequests.map(function (request) {
+            if (request.id === requestId) {
+                request.status = newStatus;
+            }
+
+            return request;
+        });
+
+        saveRequestsToLocalStorage();
+        displayRequests();
+
+        showMessage("Request status updated to " + newStatus + ".", "success");
+    }
+
+    function formatServiceType(serviceType) {
+        if (!serviceType) {
+            return "Service Request";
+        }
+
+        return serviceType
+            .split("-")
+            .map(function (word) {
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            })
+            .join(" ");
+    }
+
+    function formatVehicle(request) {
+        const vehicleDetails = [
+            request.vehicleYear,
+            request.vehicleMake,
+            request.vehicleModel
+        ].filter(function (detail) {
+            return detail !== "";
+        });
+
+        if (vehicleDetails.length === 0) {
+            return "Not provided";
+        }
+
+        return vehicleDetails.join(" ");
     }
 });
 
