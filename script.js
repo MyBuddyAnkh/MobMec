@@ -8,9 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const mobileMenuButton = document.getElementById("mobile-menu-btn");
     const navMenu = document.getElementById("nav-menu");
 
-    let serviceRequests = JSON.parse(localStorage.getItem("serviceRequests")) || [];
+    const API_URL = "http://localhost:5000/requests";
+    let serviceRequests = [];
 
-    displayRequests();
+    loadRequestsFromBackend();
 
     if (mobileMenuButton && navMenu) {
         mobileMenuButton.addEventListener("click", function () {
@@ -83,9 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 createdAt: new Date().toLocaleString()
             };
 
-            serviceRequests.push(requestData);
-            saveRequestsToLocalStorage();
-            displayRequests();
+            createRequestInBackend(requestData);
 
             showMessage(
                 "Your request has been submitted successfully. A nearby helper will be matched soon.",
@@ -205,19 +204,60 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function updateRequestStatus(requestId, newStatus) {
-        serviceRequests = serviceRequests.map(function (request) {
-            if (request.id === requestId) {
-                request.status = newStatus;
-            }
+    async function updateRequestStatus(requestId, newStatus) {
+        try {
+            const response = await fetch(API_URL + "/" + requestId + "/status", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status: newStatus
+                })
+            });
 
-            return request;
-        });
+            const data = await response.json();
 
-        saveRequestsToLocalStorage();
-        displayRequests();
+            serviceRequests = serviceRequests.map(function (request) {
+                if (request.id === requestId) {
+                    return data.request;
+                }
 
-        showMessage("Request status updated to " + newStatus + ".", "success");
+                return request;
+            });
+
+            displayRequests();
+
+            showMessage("Request status updated to " + newStatus + ".", "success");
+        } catch (error) {
+            console.log("Error updating request:", error);
+            showMessage("Could not update request status.", "error");
+        }
+    }
+
+    async function createRequestInBackend(requestData) {
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            const data = await response.json();
+
+            serviceRequests.push(data.request);
+            displayRequests();
+
+            showMessage(
+                "Your request has been submitted successfully. A nearby helper will be matched soon.",
+                "success"
+            );
+        } catch (error) {
+            console.log("Error creating request:", error);
+            showMessage("Could not submit request to server.", "error");
+        }
     }
 
     function formatServiceType(serviceType) {
@@ -247,6 +287,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         return vehicleDetails.join(" ");
+    }
+
+    async function loadRequestsFromBackend() {
+        try {
+            const response = await fetch(API_URL);
+            serviceRequests = await response.json();
+            displayRequests();
+        } catch (error) {
+            console.log("Error loading requests:", error);
+            showMessage("Could not load requests from server.", "error");
+        }
     }
 });
 
