@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
         This code runs when the customer submits the request form.
     */
     if (serviceRequestForm) {
-        serviceRequestForm.addEventListener("submit", function (event) {
+        serviceRequestForm.addEventListener("submit", async function (event) {
 
             /* 
                 event.preventDefault() stops the browser from refreshing the page.
@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const vehicleModel = document.getElementById("vehicle-model").value.trim();
             const vehicleYear = document.getElementById("vehicle-year").value.trim();
             const serviceType = document.getElementById("service-type").value;
+            const urgency = document.getElementById("urgency").value;
             const customerLocation = document.getElementById("customer-location").value.trim();
             const problemDescription = document.getElementById("problem-description").value.trim();
             const termsAgreement = document.getElementById("terms-agreement").checked;
@@ -201,6 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 serviceType === "" ||
                 customerLocation === "" ||
                 problemDescription === "" ||
+                urgency === "" ||
                 !termsAgreement
             ) {
                 showMessage(
@@ -238,21 +240,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 This is the data we will send to Node.js backend.
             */
             const requestData = {
-                id: Date.now(),
-
                 customerName: customerName,
-                customerPhone: customerPhone,
+                phone: customerPhone,
 
-                vehicleMake: vehicleMake,
-                vehicleModel: vehicleModel,
-                vehicleYear: vehicleYear,
+                carMake: vehicleMake,
+                carModel: vehicleModel,
+                carYear: vehicleYear,
 
-                serviceType: serviceType,
-                customerLocation: customerLocation,
-                problemDescription: problemDescription,
+                problemType: serviceType,
+                address: customerLocation,
+                description: problemDescription,
 
-                status: "Pending",
-                createdAt: new Date().toLocaleString()
+                urgency: document.getElementById("urgency").value
             };
 
 
@@ -264,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 It will call:
                 POST http://localhost:5000/requests
             */
-            createRequestInBackend(requestData);
+            await createRequestInBackend(requestData);
 
 
             /* 
@@ -405,20 +404,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 becomes actual customer name.
             */
             requestCard.innerHTML = `
-                <h3>${formatServiceType(request.serviceType)}</h3>
+                <h3>${formatServiceType(request.problemType)}</h3>
 
                 <p><strong>Customer:</strong> ${request.customerName}</p>
-                <p><strong>Phone:</strong> ${request.customerPhone}</p>
+                <p><strong>Phone:</strong> ${request.phone}</p>
                 <p><strong>Vehicle:</strong> ${formatVehicle(request)}</p>
-                <p><strong>Location:</strong> ${request.customerLocation}</p>
-                <p><strong>Problem:</strong> ${request.problemDescription}</p>
+                <p><strong>Location:</strong> ${request.address}</p>
+                <p><strong>Problem:</strong> ${request.description}</p>
+                <p><strong>Urgency:</strong> ${request.urgency}</p>
 
                 <p>
                     <strong>Status:</strong> 
                     <span class="request-status">${request.status}</span>
                 </p>
 
-                <p><strong>Created:</strong> ${request.createdAt}</p>
+                <p><strong>Created:</strong> ${new Date(request.createdAt).toLocaleString()}</p>
 
                 <div class="request-actions">
                     <button class="accept-btn" data-id="${request.id}">Accept</button>
@@ -702,11 +702,11 @@ document.addEventListener("DOMContentLoaded", function () {
     */
     function formatVehicle(request) {
         const vehicleDetails = [
-            request.vehicleYear,
-            request.vehicleMake,
-            request.vehicleModel
+            request.carYear,
+            request.carMake,
+            request.carModel
         ].filter(function (detail) {
-            return detail !== "";
+            return detail !== "" && detail !== undefined && detail !== null;
         });
 
         if (vehicleDetails.length === 0) {
