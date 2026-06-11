@@ -15,14 +15,14 @@
 */
 
 
-/* 
-    DOMContentLoaded means:
-    "Run this JavaScript only after the HTML page has fully loaded."
+    /* 
+        DOMContentLoaded means:
+        "Run this JavaScript only after the HTML page has fully loaded."
 
-    This is important because if JavaScript runs before HTML loads,
-    document.getElementById("service-request-form") may return null
-    because the form does not exist yet in the browser.
-*/
+        This is important because if JavaScript runs before HTML loads,
+        document.getElementById("service-request-form") may return null
+        because the form does not exist yet in the browser.
+    */
 document.addEventListener("DOMContentLoaded", function () {
 
     /* 
@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
         Because there can be many nav links, it returns a list.
     */
     const navLinks = document.querySelectorAll(".nav-link");
-
     const mobileMenuButton = document.getElementById("mobile-menu-btn");
     const navMenu = document.getElementById("nav-menu");
 
@@ -241,19 +240,18 @@ document.addEventListener("DOMContentLoaded", function () {
             */
             const requestData = {
                 customerName: customerName,
-                phone: customerPhone,
+                customerPhone: customerPhone,
 
-                carMake: vehicleMake,
-                carModel: vehicleModel,
-                carYear: vehicleYear,
+                vehicleMake: vehicleMake,
+                vehicleModel: vehicleModel,
+                vehicleYear: vehicleYear,
 
-                problemType: serviceType,
-                address: customerLocation,
-                description: problemDescription,
+                serviceType: serviceType,
+                customerLocation: customerLocation,
+                problemDescription: problemDescription,
 
-                urgency: document.getElementById("urgency").value
-            };
-
+                urgency: urgency
+            };  
 
             /* 
                 Send this request object to the backend.
@@ -399,18 +397,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 ${} is template literal syntax.
                 It lets us insert JavaScript values into HTML strings.
 
-                Example:
+                Example:formatVehicle()
                 ${request.customerName}
                 becomes actual customer name.
             */
             requestCard.innerHTML = `
-                <h3>${formatServiceType(request.problemType)}</h3>
+                <h3>${formatServiceType(request.serviceType)}</h3>
 
                 <p><strong>Customer:</strong> ${request.customerName}</p>
-                <p><strong>Phone:</strong> ${request.phone}</p>
+                <p><strong>Phone:</strong> ${request.customerPhone}</p>
                 <p><strong>Vehicle:</strong> ${formatVehicle(request)}</p>
-                <p><strong>Location:</strong> ${request.address}</p>
-                <p><strong>Problem:</strong> ${request.description}</p>
+                <p><strong>Location:</strong> ${request.customerLocation}</p>
+                <p><strong>Problem:</strong> ${request.problemDescription}</p>
                 <p><strong>Urgency:</strong> ${request.urgency}</p>
 
                 <p>
@@ -426,7 +424,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     <button class="complete-btn" data-id="${request.id}">Complete</button>
                 </div>
             `;
-
 
             /* 
                 Add this card to the requests list section on the page.
@@ -702,9 +699,9 @@ document.addEventListener("DOMContentLoaded", function () {
     */
     function formatVehicle(request) {
         const vehicleDetails = [
-            request.carYear,
-            request.carMake,
-            request.carModel
+            request.vehicleYear,
+            request.vehicleMake,
+            request.vehicleModel
         ].filter(function (detail) {
             return detail !== "" && detail !== undefined && detail !== null;
         });

@@ -1,187 +1,272 @@
-// ------------------------------
-// Import required packages
-// ------------------------------
+// ----------------------------------------
+// Import packages
+// ----------------------------------------
 
-// Express helps us create backend routes like GET, POST, PATCH
 const express = require("express");
-
-// CORS allows frontend and backend to communicate
-// Example: frontend may run on Live Server and backend on localhost:5000
 const cors = require("cors");
+require("dotenv").config();
 
-// ------------------------------
+// Import PostgreSQL connection pool
+const pool = require("./db");
+
+// ----------------------------------------
 // Create Express app
-// ------------------------------
+// ----------------------------------------
 
 const app = express();
 
-// Backend will run on this port
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// ------------------------------
+// ----------------------------------------
 // Middleware
-// ------------------------------
+// ----------------------------------------
 
-// This allows backend to understand JSON data coming from frontend
+app.use(cors());
 app.use(express.json());
 
-// This allows frontend to make requests to backend
-app.use(cors());
-
-// ------------------------------
-// Temporary data storage
-// ------------------------------
-
-// This is acting like a temporary database for now
-// Later we will replace this with JSON file, then real database
-let requests = [];
-
-// ------------------------------
+// ----------------------------------------
 // Test route
-// ------------------------------
+// ----------------------------------------
 
-// This route is only to check if backend is working
-// Open this in browser: http://localhost:5000
 app.get("/", function (req, res) {
-  res.send("MobMec backend is running");
+    res.send("MobMec backend with PostgreSQL is running");
 });
 
-// ------------------------------
+// ----------------------------------------
 // GET /requests
-// ------------------------------
+// Get all service requests from PostgreSQL
+// ----------------------------------------
 
-// This route sends all mechanic requests to frontend
-app.get("/requests", function (req, res) {
-  res.json(requests);
+app.get("/requests", async function (req, res) {
+    try {
+        const result = await pool.query(
+            `
+            SELECT 
+                id,
+                customer_name AS "customerName",
+                customer_phone AS "customerPhone",
+                vehicle_make AS "vehicleMake",
+                vehicle_model AS "vehicleModel",
+                vehicle_year AS "vehicleYear",
+                service_type AS "serviceType",
+                customer_location AS "customerLocation",
+                problem_description AS "problemDescription",
+                urgency,
+                status,
+                created_at AS "createdAt"
+            FROM requests
+            ORDER BY created_at DESC
+            `
+        );
+
+        res.json(result.rows);
+
+    } catch (error) {
+        console.error("Error getting requests:", error);
+
+        res.status(500).json({
+            message: "Could not load requests from database"
+        });
+    }
 });
 
-// ------------------------------
+// ----------------------------------------
 // POST /requests
-// ------------------------------
+// Create a new service request in PostgreSQL
+// ----------------------------------------
 
-// This route receives new request data from frontend form
-app.post("/requests", function (req, res) {
-  const data = req.body;
+app.post("/requests", async function (req, res) {
+    try {
+        const {
+            customerName,
+            customerPhone,
+            vehicleMake,
+            vehicleModel,
+            vehicleYear,
+            serviceType,
+            customerLocation,
+            problemDescription,
+            urgency
+        } = req.body;
 
-  // Basic validation
-  if (
-    !data.customerName ||
-    !data.phone ||
-    !data.carMake ||
-    !data.carModel ||
-    !data.carYear ||
-    !data.problemType ||
-    !data.description ||
-    !data.address ||
-    !data.urgency
-  ) {
-    return res.status(400).json({
-      message: "Please provide all required fields"
-    });
-  }
+        // Basic validation
+        if (
+            !customerName ||
+            !customerPhone ||
+            !serviceType ||
+            !customerLocation ||
+            !problemDescription
+        ) {
+            return res.status(400).json({
+                message: "Please provide all required fields"
+            });
+        }
 
-  // Create new request object
-  const newRequest = {
-    id: Date.now(),
-    customerName: data.customerName,
-    phone: data.phone,
-    carMake: data.carMake,
-    carModel: data.carModel,
-    carYear: data.carYear,
-    problemType: data.problemType,
-    description: data.description,
-    address: data.address,
-    urgency: data.urgency,
-    status: "Pending",
-    assignedTo: null,
-    createdAt: new Date().toISOString()
-  };
+        const result = await pool.query(
+            `
+            INSERT INTO requests (
+                customer_name,
+                customer_phone,
+                vehicle_make,
+                vehicle_model,
+                vehicle_year,
+                service_type,
+                customer_location,
+                problem_description,
+                urgency,
+                status
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            RETURNING
+                id,
+                customer_name AS "customerName",
+                customer_phone AS "customerPhone",
+                vehicle_make AS "vehicleMake",
+                vehicle_model AS "vehicleModel",
+                vehicle_year AS "vehicleYear",
+                service_type AS "serviceType",
+                customer_location AS "customerLocation",
+                problem_description AS "problemDescription",
+                urgency,
+                status,
+                created_at AS "createdAt"
+            `,
+            [
+                customerName,
+                customerPhone,
+                vehicleMake || null,
+                vehicleModel || null,
+                vehicleYear || null,
+                serviceType,
+                customerLocation,
+                problemDescription,
+                urgency || "Medium",
+                "Pending"
+            ]
+        );
 
-  // Save request in temporary array
-  requests.push(newRequest);
+        res.status(201).json({
+            message: "Request created successfully",
+            request: result.rows[0]
+        });
 
-  // Send response back to frontend
-  res.status(201).json({
-    message: "Request created successfully",
-    request: newRequest
-  });
+    } catch (error) {
+        console.error("Error creating request:", error);
+
+        res.status(500).json({
+            message: "Could not create request in database"
+        });
+    }
 });
 
-// ------------------------------
+// ----------------------------------------
 // PATCH /requests/:id/status
-// ------------------------------
+// Update request status in PostgreSQL
+// ----------------------------------------
 
-// This route updates the status of a request
-// Example statuses: Accepted, Rejected, In Progress, Completed
-app.patch("/requests/:id/status", function (req, res) {
-  const requestId = Number(req.params.id);
-  const newStatus = req.body.status;
+app.patch("/requests/:id/status", async function (req, res) {
+    try {
+        const requestId = Number(req.params.id);
+        const { status } = req.body;
 
-  // Allowed statuses
-  const allowedStatuses = [
-    "Pending",
-    "Accepted",
-    "Rejected",
-    "In Progress",
-    "Completed",
-    "Cancelled"
-  ];
+        const allowedStatuses = [
+            "Pending",
+            "Accepted",
+            "Rejected",
+            "In Progress",
+            "Completed",
+            "Cancelled"
+        ];
 
-  if (!newStatus || !allowedStatuses.includes(newStatus)) {
-    return res.status(400).json({
-      message: "Invalid status"
-    });
-  }
+        if (!status || !allowedStatuses.includes(status)) {
+            return res.status(400).json({
+                message: "Invalid status"
+            });
+        }
 
-  // Find request by id
-  const request = requests.find(function (item) {
-    return item.id === requestId;
-  });
+        const result = await pool.query(
+            `
+            UPDATE requests
+            SET status = $1
+            WHERE id = $2
+            RETURNING
+                id,
+                customer_name AS "customerName",
+                customer_phone AS "customerPhone",
+                vehicle_make AS "vehicleMake",
+                vehicle_model AS "vehicleModel",
+                vehicle_year AS "vehicleYear",
+                service_type AS "serviceType",
+                customer_location AS "customerLocation",
+                problem_description AS "problemDescription",
+                urgency,
+                status,
+                created_at AS "createdAt"
+            `,
+            [status, requestId]
+        );
 
-  if (!request) {
-    return res.status(404).json({
-      message: "Request not found"
-    });
-  }
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "Request not found"
+            });
+        }
 
-  // Update request status
-  request.status = newStatus;
+        res.json({
+            message: "Status updated successfully",
+            request: result.rows[0]
+        });
 
-  res.json({
-    message: "Status updated successfully",
-    request: request
-  });
+    } catch (error) {
+        console.error("Error updating request status:", error);
+
+        res.status(500).json({
+            message: "Could not update request status"
+        });
+    }
 });
 
-// ------------------------------
-// Optional: DELETE /requests/:id
-// ------------------------------
+// ----------------------------------------
+// DELETE /requests/:id
+// Optional testing route
+// ----------------------------------------
 
-// This is useful during testing
-app.delete("/requests/:id", function (req, res) {
-  const requestId = Number(req.params.id);
+app.delete("/requests/:id", async function (req, res) {
+    try {
+        const requestId = Number(req.params.id);
 
-  const originalLength = requests.length;
+        const result = await pool.query(
+            `
+            DELETE FROM requests
+            WHERE id = $1
+            RETURNING id
+            `,
+            [requestId]
+        );
 
-  requests = requests.filter(function (item) {
-    return item.id !== requestId;
-  });
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "Request not found"
+            });
+        }
 
-  if (requests.length === originalLength) {
-    return res.status(404).json({
-      message: "Request not found"
-    });
-  }
+        res.json({
+            message: "Request deleted successfully"
+        });
 
-  res.json({
-    message: "Request deleted successfully"
-  });
+    } catch (error) {
+        console.error("Error deleting request:", error);
+
+        res.status(500).json({
+            message: "Could not delete request"
+        });
+    }
 });
 
-// ------------------------------
+// ----------------------------------------
 // Start server
-// ------------------------------
+// ----------------------------------------
 
 app.listen(PORT, function () {
-  console.log(`MobMec backend is running on http://localhost:${PORT}`);
+    console.log(`MobMec backend running on http://localhost:${PORT}`);
 });
