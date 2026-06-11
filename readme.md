@@ -1,137 +1,346 @@
-# MobMec - Mobile Mechanic Service Platform
+# MobMec / FixMyRide
 
-MobMec is a web-based mobile mechanic service platform designed to connect customers who need roadside or vehicle assistance with nearby mechanics or helpers. The idea of this project is similar to an “Uber-style” system, but for car-related services such as flat tires, battery jump starts, engine issues, minor inspections, and emergency roadside support.
+A full-stack mobile mechanic and roadside assistance request platform. The project allows customers to submit vehicle service requests and lets a mechanic/admin-style dashboard view and update request statuses.
 
-The main goal of this project is to make it easier for customers to request help when they are facing a vehicle problem. Instead of searching for a mechanic manually or calling multiple shops, customers can create a service request by entering their vehicle details, problem type, description, location, and urgency level. Mechanics or helpers can then view available requests and accept or reject jobs based on their availability and skill level.
+This project is built as a clean MVP so recruiters can quickly test the core workflow without needing to create an account or go through a login process.
 
-This project is currently in the early development stage. I am building it step by step to improve my practical skills in frontend development, backend development, databases, Git/GitHub, and full-stack project structure.
+---
 
-## Project Purpose
+## Project Overview
 
-The purpose of MobMec is to create a real-world style application that solves a practical problem in the automotive service industry. It is also being built as a portfolio project to demonstrate important software development concepts such as:
+MobMec, also shown as FixMyRide in the UI, is designed for drivers who need fast roadside help such as tire changes, battery boosts, fuel assistance, lockout support, basic diagnostics, or minor repairs.
 
-- Customer request forms
-- User roles
-- Service request tracking
-- Mechanic/helper dashboard
-- Admin dashboard
-- Status updates
-- Database storage
-- Backend API communication
-- Git and GitHub version control
-- Future deployment to a live server
+The main goal of this project is to demonstrate a complete full-stack flow:
 
-## Main User Roles
+1. A customer submits a service request from the frontend.
+2. The request is sent to a Node.js and Express backend.
+3. The backend saves the request in a PostgreSQL database.
+4. The frontend loads saved requests from the backend.
+5. Request status can be updated from the dashboard.
 
-The project will include three main types of users:
+---
 
-### 1. Customer
+## Why There Is No Login Yet
 
-Customers will be able to create service requests when they need help with their car. They can enter details such as their name, vehicle information, problem category, description, address, and urgency.
+Login and signup are intentionally not included in this MVP.
 
-### 2. Mechanic / Helper
+For recruiter testing, this makes the project faster to review:
 
-Mechanics or helpers will be able to view open service requests. They can accept or reject jobs and update the status of a request.
+- No account creation required
+- No test credentials needed
+- The request form and dashboard can be tested immediately
+- The main full-stack functionality is visible right away
 
-Some jobs may require a professional mechanic, while smaller jobs such as a tire change or battery boost may be handled by a helper.
+Authentication is planned as a future improvement, but it was intentionally skipped in the first version to keep the demo simple and easy to evaluate.
 
-### 3. Admin
+---
 
-The admin will be able to manage the overall system, view all service requests, track completed and pending jobs, and monitor platform activity.
+## Tech Stack
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript
+
+### Backend
+
+- Node.js
+- Express.js
+- CORS
+- dotenv
+
+### Database
+
+- PostgreSQL
+- node-postgres (`pg`)
+
+---
 
 ## Current Features
 
-At the current stage, the project is focused on the basic frontend structure. The first version includes:
+- Responsive landing page for a mobile mechanic service
+- Service request form
+- Form validation
+- PostgreSQL database storage
+- Live service requests dashboard
+- View all submitted service requests
+- Update request status
+  - Pending
+  - Accepted
+  - Rejected
+  - Completed
+- Contact form UI
+- REST API backend
 
-- Basic HTML structure
-- Customer service request form
-- Fields for customer and vehicle details
-- Problem type selection
-- Description input
-- Simple page layout
-- Separate CSS and JavaScript files
-- GitHub version control setup
+---
 
-## Planned Features
+## Core User Flow
 
-Over the next few days, I plan to add more features and improve the project step by step.
+```text
+Customer fills service request form
+↓
+Frontend sends request to backend API
+↓
+Express server validates request data
+↓
+PostgreSQL stores the request
+↓
+Frontend fetches saved requests
+↓
+Dashboard displays request cards
+↓
+Status buttons update request status
+```
 
-### Frontend Improvements
+---
 
-I will improve the design of the website by adding better styling, layout, colors, spacing, and responsive design for mobile and desktop screens. The goal is to make the website look more professional and easier to use.
+## Folder Structure
 
-### JavaScript Functionality
+```text
+MobMec/
+├── index.html
+├── style.css
+├── script.js
+├── README.md
+└── backend/
+    ├── server.js
+    ├── db.js
+    ├── schema.sql
+    ├── package.json
+    ├── package-lock.json
+    └── .env
+```
 
-I will add JavaScript functionality so that when a customer submits a request, the request can be displayed on the page immediately. This will make the project more interactive and help simulate how real service requests would work.
+> Note: `node_modules/` is generated after running `npm install` and does not need to be written manually.
 
-### Service Request Cards
+---
 
-I plan to show each submitted request as a card. Each card will display important information such as:
+## API Routes
 
-- Customer name
-- Vehicle details
-- Problem type
-- Description
-- Urgency level
-- Current status
+| Method | Route | Description |
+|---|---|---|
+| GET | `/` | Test route to confirm backend is running |
+| GET | `/requests` | Get all service requests |
+| POST | `/requests` | Create a new service request |
+| PATCH | `/requests/:id/status` | Update request status |
+| DELETE | `/requests/:id` | Delete a request for testing/cleanup |
 
-### Mechanic Dashboard
+---
 
-I will add a mechanic/helper dashboard where open service requests can be viewed. Mechanics will be able to accept or reject a request.
+## Request Data Model
 
-### Request Status System
+The project uses this main request model:
 
-I will add a basic status system for each request. Example statuses include:
+```js
+{
+  id,
+  customerName,
+  customerPhone,
+  vehicleMake,
+  vehicleModel,
+  vehicleYear,
+  serviceType,
+  customerLocation,
+  problemDescription,
+  urgency,
+  status,
+  createdAt
+}
+```
 
-- Pending
-- Accepted
-- In Progress
-- Completed
-- Cancelled
+---
 
-### Admin Dashboard
+## PostgreSQL Table
 
-I plan to create an admin dashboard that shows basic platform information such as:
+The main table is `requests`.
 
-- Total requests
-- Pending requests
-- Accepted jobs
-- Completed jobs
-- Most common problem types
+```sql
+CREATE TABLE IF NOT EXISTS requests (
+    id SERIAL PRIMARY KEY,
 
-### Backend API
+    customer_name VARCHAR(100) NOT NULL,
+    customer_phone VARCHAR(30) NOT NULL,
 
-After completing the basic frontend, I plan to add a backend using Node.js and Express. The backend will handle service request creation, request updates, and communication between the frontend and database.
+    vehicle_make VARCHAR(100),
+    vehicle_model VARCHAR(100),
+    vehicle_year INTEGER,
 
-### Database Integration
+    service_type VARCHAR(100) NOT NULL,
+    customer_location TEXT NOT NULL,
+    problem_description TEXT NOT NULL,
 
-I plan to use a SQL database such as PostgreSQL or MySQL to store user details, vehicle information, service requests, assignments, and reviews.
+    urgency VARCHAR(50) DEFAULT 'Medium',
+    status VARCHAR(50) DEFAULT 'Pending',
 
-### Authentication
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
-In a later version, I plan to add login and signup functionality for customers, mechanics, helpers, and admins.
+---
 
-### Monitoring Script
+## How to Run the Project Locally
 
-I also plan to add a simple Python monitoring script that checks for delayed service requests and generates basic alerts or logs. This will help add an IT/infrastructure-style feature to the project.
+### 1. Clone the Repository
 
-## Future Technology Stack
+```bash
+git clone <your-repository-url>
+cd MobMec
+```
 
-The planned technology stack for this project is:
+### 2. Set Up PostgreSQL
 
-- HTML
-- CSS
-- JavaScript
-- React
-- Node.js
-- Express.js
-- PostgreSQL or MySQL
-- Python for monitoring script
-- Git and GitHub
-- Deployment on a cloud/server platform
+Create a PostgreSQL database named:
 
-## Long-Term Goal
+```text
+mobmec_db
+```
 
-The long-term goal of MobMec is to become a complete full-stack project where customers can request mobile mechanic help, mechanics can manage jobs, and admins can monitor all platform activity.
+Then run the SQL inside:
 
-This project will help me practice real software development skills, including frontend design, backend APIs, database design, version control, and deployment.
+```text
+backend/schema.sql
+```
+
+You can run it using pgAdmin Query Tool or the PostgreSQL terminal.
+
+### 3. Configure Environment Variables
+
+Create a `.env` file inside the `backend/` folder:
+
+```env
+PORT=5000
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=mobmec_db
+DB_USER=postgres
+DB_PASSWORD=your_postgres_password
+```
+
+Replace `your_postgres_password` with your actual PostgreSQL password.
+
+### 4. Install Backend Dependencies
+
+```bash
+cd backend
+npm install
+```
+
+### 5. Start the Backend Server
+
+```bash
+npm run dev
+```
+
+Expected output:
+
+```text
+Connected to PostgreSQL database
+MobMec backend running on http://localhost:5000
+```
+
+Open this URL in the browser to test the backend:
+
+```text
+http://localhost:5000
+```
+
+To test all saved requests:
+
+```text
+http://localhost:5000/requests
+```
+
+### 6. Start the Frontend
+
+Open `index.html` with VS Code Live Server.
+
+Example frontend URL:
+
+```text
+http://127.0.0.1:5500/index.html
+```
+
+---
+
+## Testing Checklist
+
+Use this checklist to confirm the project is working:
+
+- Start PostgreSQL
+- Start backend with `npm run dev`
+- Open frontend with Live Server
+- Submit a service request
+- Confirm the request appears in the dashboard
+- Refresh the page
+- Confirm the request is still visible
+- Click `Accept`, `Reject`, or `Complete`
+- Refresh again
+- Confirm the updated status is still saved
+- Run `SELECT * FROM requests;` in PostgreSQL and confirm the row exists
+
+---
+
+## Example Test Data
+
+```text
+Name: Test User
+Phone: 1234567890
+Vehicle Make: Toyota
+Vehicle Model: Camry
+Vehicle Year: 2010
+Service Type: Battery Boost
+Urgency: High
+Location: Richmond Hill
+Problem Description: Car battery is dead and the vehicle will not start.
+```
+
+---
+
+## Future Improvements
+
+The current version focuses on the core full-stack MVP. These features can be added later:
+
+- User login and signup
+- Separate customer and mechanic dashboards
+- Admin dashboard
+- Google Maps integration
+- Location-based mechanic matching
+- Real-time status updates with WebSockets
+- Mechanic profile pages
+- Ratings and reviews
+- Payment integration
+- Email/SMS notifications
+- Request history for customers
+- Deployment with hosted frontend, backend, and database
+- React frontend upgrade
+
+---
+
+## Project Status
+
+MVP development focus:
+
+```text
+Landing page: Complete
+Request form: Complete
+Backend API: Complete
+PostgreSQL integration: Complete
+Dashboard display: Complete
+Status update flow: Complete
+Login/authentication: Planned future improvement
+Maps/payment/realtime tracking: Planned future improvement
+```
+
+---
+
+## Resume Summary
+
+Built a full-stack mobile mechanic and roadside assistance request platform using HTML, CSS, JavaScript, Node.js, Express.js, and PostgreSQL. The platform allows users to create vehicle service requests, stores request data in a PostgreSQL database, and provides a dashboard to view and update request statuses through REST APIs.
+
+---
+
+## Author
+
+Created by Anmol Khurmi.
